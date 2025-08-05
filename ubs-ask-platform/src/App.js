@@ -3,6 +3,12 @@ import { BrowserRouter as Router, Routes, Route, Link, useParams, useNavigate } 
 import { Search, Plus, User, ArrowLeft, ThumbsUp, ThumbsDown, MessageSquare } from 'lucide-react';
 import './App.css';
 
+// Add Source Sans Pro font
+const link = document.createElement('link');
+link.rel = 'stylesheet';
+link.href = 'https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700;900&display=swap';
+document.head.appendChild(link);
+
 const UBSLogo = () => (
   <div style={{width: 40, height: 40, background: '#d00000', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 16}}>
     {/* Placeholder for UBS logo, replace with <img src="/path/to/logo.png" ... /> */}
@@ -21,7 +27,7 @@ const divisions = [
     { id: 5, title: "Docker deployment issues", votes: 11, answers: 4, time: "3h ago" },
     { id: 6, title: "Database migration strategies", votes: 19, answers: 6, time: "5h ago" }
   ]},
-  { name: 'WMA', key: 'wma', icon: '📊', count: 31, desc: 'Wealth Mgmt', teams: ['Advisory', 'Portfolio', 'Client Services'], questions: [
+  { name: 'WMA', key: 'wma', icon: '📊', count: 31, desc: 'Wealth Management', teams: ['Advisory', 'Portfolio', 'Client Services'], questions: [
     { id: 7, title: "Portfolio risk assessment tools?", votes: 17, answers: 4, time: "30m ago" },
     { id: 8, title: "Client reporting automation", votes: 14, answers: 3, time: "2h ago" },
     { id: 9, title: "Market analysis frameworks", votes: 21, answers: 8, time: "6h ago" }
@@ -30,7 +36,7 @@ const divisions = [
     { id: 10, title: "Fund performance tracking", votes: 9, answers: 2, time: "1h ago" },
     { id: 11, title: "Regulatory compliance updates", votes: 13, answers: 5, time: "4h ago" }
   ]},
-  { name: 'General', key: 'general', icon: '🌐', count: 42, desc: 'General/Europe', teams: ['Europe', 'Support', 'Other'], questions: [
+  { name: 'General', key: 'general', icon: '🌐', count: 42, desc: 'General Questions', teams: ['DevOps (General)', 'Support', 'Other'], questions: [
     { id: 12, title: "Office 365 migration timeline?", votes: 25, answers: 9, time: "45m ago" },
     { id: 13, title: "New employee onboarding process", votes: 18, answers: 6, time: "2h ago" }
   ]}
@@ -84,28 +90,28 @@ const errors = [
   { id: 38, title: 'Repository Migration', status: 'unresolved', tags: ['Migration', 'Setup'] },
   { id: 25, title: 'Init setup', status: 'mistake', tags: ['Setup'] }
 ];
-// Add more questions to hotQuestions
+// Add more questions to hotQuestions with AI answers
 const hotQuestions = [
-  { id: 1, title: 'How do I migrate from legacy system?', votes: 23, answers: 5, tags: ['Migration', 'Tech'], author: 'Sarah M.', time: '2h ago' },
-  { id: 2, title: 'Best practices for client onboarding?', votes: 18, answers: 3, tags: ['Onboarding', 'Process'], author: 'Mike R.', time: '4h ago' },
-  { id: 3, title: 'How to handle large client portfolios?', votes: 15, answers: 3, tags: ['Migration', 'Compliance'], author: 'Alice T.', time: '2h ago' },
-  { id: 4, title: 'API integration with legacy systems?', votes: 23, answers: 7, tags: ['Tech', 'API'], author: 'John D.', time: '1h ago' },
-  { id: 5, title: 'Docker deployment issues', votes: 11, answers: 4, tags: ['Tech', 'DevOps'], author: 'Priya K.', time: '3h ago' },
-  { id: 6, title: 'Database migration strategies', votes: 19, answers: 6, tags: ['Migration', 'Backend'], author: 'Carlos G.', time: '5h ago' },
-  { id: 7, title: 'Portfolio risk assessment tools?', votes: 17, answers: 4, tags: ['Compliance', 'Risk'], author: 'Emily W.', time: '30m ago' },
-  { id: 8, title: 'Client reporting automation', votes: 14, answers: 3, tags: ['Process', 'Automation'], author: 'Liam T.', time: '2h ago' },
-  { id: 9, title: 'Market analysis frameworks', votes: 21, answers: 8, tags: ['Tech', 'Analysis'], author: 'Olivia F.', time: '6h ago' },
-  { id: 10, title: 'Fund performance tracking', votes: 9, answers: 2, tags: ['Funds', 'Tracking'], author: 'Jane S.', time: '1h ago' },
-  { id: 11, title: 'Regulatory compliance updates', votes: 13, answers: 5, tags: ['Compliance', 'Regulatory'], author: 'Mike R.', time: '4h ago' },
-  { id: 12, title: 'Office 365 migration timeline?', votes: 25, answers: 9, tags: ['Migration', 'Setup'], author: 'Sarah M.', time: '45m ago' },
-  { id: 13, title: 'New employee onboarding process', votes: 18, answers: 6, tags: ['Onboarding', 'Process'], author: 'Priya K.', time: '2h ago' },
-  { id: 14, title: 'How to automate compliance checks?', votes: 16, answers: 4, tags: ['Compliance', 'Automation'], author: 'Carlos G.', time: '3h ago' },
-  { id: 15, title: 'Best tools for DevOps pipelines?', votes: 20, answers: 7, tags: ['DevOps', 'Tech'], author: 'John D.', time: '1h ago' },
-  { id: 16, title: 'Frontend performance optimization?', votes: 12, answers: 3, tags: ['Frontend', 'Tech'], author: 'Olivia F.', time: '2h ago' },
-  { id: 17, title: 'Backend API security best practices?', votes: 22, answers: 5, tags: ['Backend', 'API'], author: 'Jane S.', time: '4h ago' },
-  { id: 18, title: 'How to set up new compliance workflows?', votes: 10, answers: 2, tags: ['Compliance', 'Setup'], author: 'Emily W.', time: '5h ago' },
-  { id: 19, title: 'Risk management for new projects?', votes: 14, answers: 4, tags: ['Risk', 'Process'], author: 'Liam T.', time: '1h ago' },
-  { id: 20, title: 'Automating onboarding with scripts?', votes: 17, answers: 6, tags: ['Onboarding', 'Automation'], author: 'Priya K.', time: '2h ago' }
+  { id: 1, title: 'How do I migrate from legacy system?', votes: 23, answers: 5, tags: ['Migration', 'Tech'], author: 'Sarah M.', time: '2h ago', resolved: false, aiAnswer: 'Based on our migration patterns, I recommend using the incremental migration approach. Start with non-critical systems, then gradually move core functions. Use the migration toolkit available in our internal repository.' },
+  { id: 2, title: 'Best practices for client onboarding?', votes: 18, answers: 3, tags: ['Onboarding', 'Process'], author: 'Mike R.', time: '4h ago', resolved: true, aiAnswer: 'Follow the 3-step onboarding process: 1) Initial setup with compliance checks, 2) Portfolio configuration and risk assessment, 3) Client training and documentation. Use the automated onboarding workflow in the client portal.' },
+  { id: 3, title: 'How to handle large client portfolios?', votes: 15, answers: 3, tags: ['Migration', 'Compliance'], author: 'Alice T.', time: '2h ago', resolved: false, aiAnswer: 'For large portfolios, implement batch processing and use the portfolio management tools. Ensure compliance by running automated checks before each batch. Consider using the portfolio optimization algorithm.' },
+  { id: 4, title: 'API integration with legacy systems?', votes: 23, answers: 7, tags: ['Tech', 'API'], author: 'John D.', time: '1h ago', resolved: true, aiAnswer: 'Use the API gateway pattern with rate limiting and authentication. Implement the standardized error handling protocol. Reference the API documentation in the developer portal for specific endpoints.' },
+  { id: 5, title: 'Docker deployment issues', votes: 11, answers: 4, tags: ['Tech', 'DevOps'], author: 'Priya K.', time: '3h ago', resolved: false, aiAnswer: 'Check the Docker configuration in the deployment pipeline. Common issues include memory limits and network connectivity. Use the troubleshooting guide in the DevOps wiki for specific error codes.' },
+  { id: 6, title: 'Database migration strategies', votes: 19, answers: 6, tags: ['Migration', 'Backend'], author: 'Carlos G.', time: '5h ago', resolved: true, aiAnswer: 'Implement blue-green deployment for zero-downtime migrations. Use the database migration toolkit with rollback capabilities. Test thoroughly in staging environment before production.' },
+  { id: 7, title: 'Portfolio risk assessment tools?', votes: 17, answers: 4, tags: ['Compliance', 'Risk'], author: 'Emily W.', time: '30m ago', resolved: false, aiAnswer: 'Use the integrated risk assessment platform with real-time monitoring. The system automatically calculates risk scores and generates compliance reports. Access through the risk management dashboard.' },
+  { id: 8, title: 'Client reporting automation', votes: 14, answers: 3, tags: ['Process', 'Automation'], author: 'Liam T.', time: '2h ago', resolved: true, aiAnswer: 'Leverage the automated reporting system with customizable templates. Set up scheduled reports and use the data visualization tools. Configure alerts for critical metrics.' },
+  { id: 9, title: 'Market analysis frameworks', votes: 21, answers: 8, tags: ['Tech', 'Analysis'], author: 'Olivia F.', time: '6h ago', resolved: false, aiAnswer: 'Use the market analysis toolkit with machine learning models. Implement the standardized analysis framework and leverage historical data patterns. Access through the analytics platform.' },
+  { id: 10, title: 'Fund performance tracking', votes: 9, answers: 2, tags: ['Funds', 'Tracking'], author: 'Jane S.', time: '1h ago', resolved: true, aiAnswer: 'Utilize the performance tracking dashboard with real-time metrics. Set up automated alerts for performance thresholds. Use the benchmarking tools for comparison analysis.' },
+  { id: 11, title: 'Regulatory compliance updates', votes: 13, answers: 5, tags: ['Compliance', 'Regulatory'], author: 'Mike R.', time: '4h ago', resolved: false, aiAnswer: 'Stay updated through the compliance notification system. Review the regulatory change log and implement required updates. Use the compliance checklist for verification.' },
+  { id: 12, title: 'Office 365 migration timeline?', votes: 25, answers: 9, tags: ['Migration', 'Setup'], author: 'Sarah M.', time: '45m ago', resolved: true, aiAnswer: 'Follow the 6-week migration plan: Week 1-2: Planning and preparation, Week 3-4: Pilot migration, Week 5-6: Full rollout. Use the migration checklist and timeline tracker.' },
+  { id: 13, title: 'New employee onboarding process', votes: 18, answers: 6, tags: ['Onboarding', 'Process'], author: 'Priya K.', time: '2h ago', resolved: false, aiAnswer: 'Follow the comprehensive onboarding checklist: Day 1: System access and introductions, Week 1: Training modules, Month 1: Mentorship and shadowing. Use the onboarding portal for tracking progress.' },
+  { id: 14, title: 'How to automate compliance checks?', votes: 16, answers: 4, tags: ['Compliance', 'Automation'], author: 'Carlos G.', time: '3h ago', resolved: true, aiAnswer: 'Implement automated compliance monitoring using the compliance engine. Set up scheduled checks and configure alert thresholds. Use the compliance dashboard for oversight.' },
+  { id: 15, title: 'Best tools for DevOps pipelines?', votes: 20, answers: 7, tags: ['DevOps', 'Tech'], author: 'John D.', time: '1h ago', resolved: false, aiAnswer: 'Use the integrated DevOps platform with CI/CD pipelines. Implement automated testing and deployment strategies. Leverage the monitoring and logging tools for pipeline optimization.' },
+  { id: 16, title: 'Frontend performance optimization?', votes: 12, answers: 3, tags: ['Frontend', 'Tech'], author: 'Olivia F.', time: '2h ago', resolved: true, aiAnswer: 'Implement code splitting and lazy loading. Use the performance monitoring tools and optimize bundle sizes. Follow the frontend optimization checklist for best practices.' },
+  { id: 17, title: 'Backend API security best practices?', votes: 22, answers: 5, tags: ['Backend', 'API'], author: 'Jane S.', time: '4h ago', resolved: false, aiAnswer: 'Implement OAuth 2.0 authentication and rate limiting. Use HTTPS and input validation. Follow the security checklist and conduct regular security audits.' },
+  { id: 18, title: 'How to set up new compliance workflows?', votes: 10, answers: 2, tags: ['Compliance', 'Setup'], author: 'Emily W.', time: '5h ago', resolved: true, aiAnswer: 'Use the workflow builder tool to create custom compliance processes. Configure approval chains and automated notifications. Test workflows in sandbox environment before production.' },
+  { id: 19, title: 'Risk management for new projects?', votes: 14, answers: 4, tags: ['Risk', 'Process'], author: 'Liam T.', time: '1h ago', resolved: false, aiAnswer: 'Conduct risk assessment using the risk management framework. Identify and mitigate potential risks early. Use the risk tracking dashboard for ongoing monitoring.' },
+  { id: 20, title: 'Automating onboarding with scripts?', votes: 17, answers: 6, tags: ['Onboarding', 'Automation'], author: 'Priya K.', time: '2h ago', resolved: true, aiAnswer: 'Use the onboarding automation toolkit with customizable scripts. Implement role-based automation and integrate with HR systems. Monitor automation success rates and optimize processes.' }
 ];
 const allTags = Array.from(new Set([
   ...projects.flatMap(p => p.tags),
@@ -252,9 +258,11 @@ function Navbar() {
       <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: 900, margin: '0 auto'}}>
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 8}}>
           <UBSLogo />
-          <div className="ubs-navbar-logo" style={{fontSize: '2.2rem', fontWeight: 900, color: '#111', letterSpacing: 2, display: 'flex', alignItems: 'center'}}>
-            UBS <span style={{fontWeight: 400, color: '#111', marginLeft: 8}}>ask</span>
-          </div>
+          <Link to="/" style={{textDecoration: 'none'}}>
+            <div className="ubs-navbar-logo" style={{fontSize: '2.2rem', fontWeight: 900, color: '#111', letterSpacing: 2, display: 'flex', alignItems: 'center', cursor: 'pointer'}}>
+              UBS <span style={{fontWeight: 400, color: '#111', marginLeft: 8}}>ask</span>
+            </div>
+          </Link>
           <div className="ubs-navbar-user" style={{marginLeft: 32}}>
             <User />
           </div>
@@ -264,9 +272,11 @@ function Navbar() {
             <Search style={{marginRight: 8, color: '#888'}} />
             <input placeholder="Search..." style={{width: '100%'}} />
           </div>
-          <button className="ubs-navbar-create" style={{marginLeft: 16}}>
-            <Plus style={{marginRight: 6, marginBottom: -2}} />CREATE
-          </button>
+          <Link to="/create-question" style={{textDecoration: 'none'}}>
+            <button className="ubs-navbar-create" style={{marginLeft: 16}}>
+              <Plus style={{marginRight: 6, marginBottom: -2}} />CREATE
+            </button>
+          </Link>
         </div>
       </div>
     </header>
@@ -469,48 +479,57 @@ function DivisionPage({ tagFilter, setTagFilter, tagSearch, setTagSearch, filter
         <div className="ubs-division-card-icon">{division.icon}</div>
         <h1 style={{fontSize: '2rem', fontWeight: 800, color: '#111'}}>{division.name}</h1>
       </div>
-      <div style={{display: 'flex', gap: 24, marginBottom: 24}}>
+      <div style={{display: 'flex', gap: 24, marginBottom: 24, alignItems: 'center', justifyContent: 'space-between'}}>
         <span style={{fontWeight: 700, color: '#d00000', fontSize: 18, borderBottom: '2.5px solid #d00000', padding: '0.5rem 1.5rem'}}>Overview</span>
+        <Link to="/create-question" style={{textDecoration: 'none'}}>
+          <button style={{background: '#d00000', color: '#fff', border: 'none', borderRadius: 8, padding: '0.5rem 1.5rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6}}>
+            <Plus style={{width: 16, height: 16}} /> Create Question
+          </button>
+        </Link>
       </div>
-      <div style={{display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 32}}>
+      <div style={{display: 'grid', gridTemplateColumns: divisionKey === 'general' ? '1fr' : '2fr 1fr', gap: 32}}>
         <div>
-          <div className="ubs-section">
-            <div className="ubs-section-title">Projects</div>
-            {filteredProjects.map((p) => (
-              <div key={p.id} className="ubs-card" style={{marginBottom: 12, cursor: 'pointer'}} onClick={() => navigate(`/project/${p.id}`)}>
-                <div style={{fontWeight: 700, color: '#111'}}>{p.name}</div>
-                <div style={{color: '#888', fontSize: 14}}>{p.desc}</div>
-                <div style={{color: '#d00000', fontWeight: 600, fontSize: 13, marginTop: 4}}>{p.status}</div>
-                <div style={{marginTop: 6, display: 'flex', gap: 6}}>
-                  {p.tags.map(tag => (
-                    <span key={tag} className="ubs-tag" style={{background: getTagColor(tag), color: getTagColor(tag) === '#fff' ? '#d00000' : '#fff', fontSize: '0.85rem', padding: '0.15rem 0.7rem'}}>{tag}</span>
-                  ))}
-                </div>
+          {divisionKey !== 'general' && (
+            <>
+              <div className="ubs-section">
+                <div className="ubs-section-title">Projects</div>
+                {filteredProjects.map((p) => (
+                  <div key={p.id} className="ubs-card" style={{marginBottom: 12, cursor: 'pointer'}} onClick={() => navigate(`/project/${p.id}`)}>
+                    <div style={{fontWeight: 700, color: '#111'}}>{p.name}</div>
+                    <div style={{color: '#888', fontSize: 14}}>{p.desc}</div>
+                    <div style={{color: '#d00000', fontWeight: 600, fontSize: 13, marginTop: 4}}>{p.status}</div>
+                    <div style={{marginTop: 6, display: 'flex', gap: 6}}>
+                      {p.tags.map(tag => (
+                        <span key={tag} className="ubs-tag" style={{background: getTagColor(tag), color: getTagColor(tag) === '#fff' ? '#d00000' : '#fff', fontSize: '0.85rem', padding: '0.15rem 0.7rem'}}>{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+                {filteredProjects.length === 0 && <div style={{color: '#888', fontSize: 14}}>No projects for this tag.</div>}
               </div>
-            ))}
-            {filteredProjects.length === 0 && <div style={{color: '#888', fontSize: 14}}>No projects for this tag.</div>}
-          </div>
-          <div className="ubs-section">
-            <div className="ubs-section-title">Communities</div>
-            {filteredCommunities.map((c) => (
-              <Link to={`/division/${divisionKey}/community/${c.key}`} key={c.key} className="ubs-community-card" style={{textDecoration: 'none', color: 'inherit', cursor: 'pointer'}}>
-                <div className="ubs-community-card-title">{c.name}</div>
-                <div className="ubs-community-card-meta">{c.desc}</div>
-                <div style={{fontSize: 13, color: '#d00000', marginBottom: 4}}>{c.help}</div>
-                <div style={{marginTop: 6, display: 'flex', gap: 6}}>
-                  {c.tags.map(tag => (
-                    <span key={tag} className="ubs-tag" style={{background: getTagColor(tag), color: getTagColor(tag) === '#fff' ? '#d00000' : '#fff', fontSize: '0.85rem', padding: '0.15rem 0.7rem'}}>{tag}</span>
-                  ))}
-                </div>
-                <div className="ubs-community-card-actions">
-                  <span className="ubs-upvote"><ThumbsUp /> {c.upvotes}</span>
-                  <span className="ubs-downvote"><ThumbsDown /> {c.downvotes}</span>
-                  <button style={{background: '#d00000', color: '#fff', border: 'none', borderRadius: 8, padding: '2px 12px', fontWeight: 600, cursor: 'pointer'}}>Add Post</button>
-                </div>
-              </Link>
-            ))}
-            {filteredCommunities.length === 0 && <div style={{color: '#888', fontSize: 14}}>No communities for this tag.</div>}
-          </div>
+              <div className="ubs-section">
+                <div className="ubs-section-title">Communities</div>
+                {filteredCommunities.map((c) => (
+                  <Link to={`/division/${divisionKey}/community/${c.key}`} key={c.key} className="ubs-community-card" style={{textDecoration: 'none', color: 'inherit', cursor: 'pointer'}}>
+                    <div className="ubs-community-card-title">{c.name}</div>
+                    <div className="ubs-community-card-meta">{c.desc}</div>
+                    <div style={{fontSize: 13, color: '#d00000', marginBottom: 4}}>{c.help}</div>
+                    <div style={{marginTop: 6, display: 'flex', gap: 6}}>
+                      {c.tags.map(tag => (
+                        <span key={tag} className="ubs-tag" style={{background: getTagColor(tag), color: getTagColor(tag) === '#fff' ? '#d00000' : '#fff', fontSize: '0.85rem', padding: '0.15rem 0.7rem'}}>{tag}</span>
+                      ))}
+                    </div>
+                    <div className="ubs-community-card-actions">
+                      <span className="ubs-upvote"><ThumbsUp /> {c.upvotes}</span>
+                      <span className="ubs-downvote"><ThumbsDown /> {c.downvotes}</span>
+                      <button style={{background: '#d00000', color: '#fff', border: 'none', borderRadius: 8, padding: '2px 12px', fontWeight: 600, cursor: 'pointer'}}>Add Post</button>
+                    </div>
+                  </Link>
+                ))}
+                {filteredCommunities.length === 0 && <div style={{color: '#888', fontSize: 14}}>No communities for this tag.</div>}
+              </div>
+            </>
+          )}
           <div className="ubs-section">
             <div className="ubs-section-title">Common Errors (AI)</div>
             {filteredErrors.map((e) => (
@@ -527,29 +546,74 @@ function DivisionPage({ tagFilter, setTagFilter, tagSearch, setTagSearch, filter
             {filteredErrors.length === 0 && <div style={{color: '#888', fontSize: 14}}>No errors for this tag.</div>}
           </div>
         </div>
-        <div>
-          <TagSection tagFilter={tagFilter} setTagFilter={setTagFilter} tagSearch={tagSearch} setTagSearch={setTagSearch} filteredTags={filteredTags} />
-          <div className="ubs-section">
-            <div className="ubs-section-title">Hot Questions</div>
-            {filteredQuestions.map((q) => (
-              <div key={q.id} className="ubs-hot-question" style={{cursor: 'pointer'}} onClick={() => navigate(`/question/${q.id}`)}>
-                <div className="ubs-hot-question-title">{q.title}</div>
-                <div className="ubs-hot-question-meta">by {q.author} &middot; {q.time}</div>
-                <div style={{display: 'flex', gap: 12, fontSize: 14, marginBottom: 4}}>
-                  <span className="ubs-upvote"><ThumbsUp /> {q.votes}</span>
-                  <span className="ubs-downvote"><ThumbsDown /> 0</span>
-                  <span style={{color: '#d00000', fontWeight: 600}}><MessageSquare style={{marginRight: 2}} />{q.answers} answers</span>
+        {divisionKey !== 'general' && (
+          <div>
+            <TagSection tagFilter={tagFilter} setTagFilter={setTagFilter} tagSearch={tagSearch} setTagSearch={setTagSearch} filteredTags={filteredTags} />
+            <div className="ubs-section">
+              <div className="ubs-section-title">Hot Questions</div>
+              {filteredQuestions.map((q) => (
+                <div key={q.id} className="ubs-hot-question" style={{cursor: 'pointer'}} onClick={() => navigate(`/question/${q.id}`)}>
+                  <div style={{display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4}}>
+                    <div style={{
+                      width: 8,
+                      height: 8,
+                      borderRadius: '50%',
+                      background: q.resolved ? '#00b300' : '#d00000',
+                      flexShrink: 0
+                    }}></div>
+                    <div className="ubs-hot-question-title">{q.title}</div>
+                  </div>
+                  <div className="ubs-hot-question-meta">by {q.author} &middot; {q.time}</div>
+                  <div style={{display: 'flex', gap: 12, fontSize: 14, marginBottom: 4}}>
+                    <span className="ubs-upvote"><ThumbsUp /> {q.votes}</span>
+                    <span className="ubs-downvote"><ThumbsDown /> 0</span>
+                    <span style={{color: '#d00000', fontWeight: 600}}><MessageSquare style={{marginRight: 2}} />{q.answers} answers</span>
+                  </div>
+                  <div style={{marginTop: 6, display: 'flex', gap: 6}}>
+                    {q.tags.map(tag => (
+                      <span key={tag} className="ubs-tag" style={{background: getTagColor(tag), color: getTagColor(tag) === '#fff' ? '#d00000' : '#fff', fontSize: '0.85rem', padding: '0.15rem 0.7rem'}}>{tag}</span>
+                    ))}
+                  </div>
                 </div>
-                <div style={{marginTop: 6, display: 'flex', gap: 6}}>
-                  {q.tags.map(tag => (
-                    <span key={tag} className="ubs-tag" style={{background: getTagColor(tag), color: getTagColor(tag) === '#fff' ? '#d00000' : '#fff', fontSize: '0.85rem', padding: '0.15rem 0.7rem'}}>{tag}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-            {filteredQuestions.length === 0 && <div style={{color: '#888', fontSize: 14}}>No questions for this tag.</div>}
+              ))}
+              {filteredQuestions.length === 0 && <div style={{color: '#888', fontSize: 14}}>No questions for this tag.</div>}
+            </div>
           </div>
-        </div>
+        )}
+        {divisionKey === 'general' && (
+          <div>
+            <TagSection tagFilter={tagFilter} setTagFilter={setTagFilter} tagSearch={tagSearch} setTagSearch={setTagSearch} filteredTags={filteredTags} />
+            <div className="ubs-section">
+              <div className="ubs-section-title">Hot Questions</div>
+              {filteredQuestions.map((q) => (
+                <div key={q.id} className="ubs-hot-question" style={{cursor: 'pointer'}} onClick={() => navigate(`/question/${q.id}`)}>
+                  <div style={{display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4}}>
+                    <div style={{
+                      width: 8,
+                      height: 8,
+                      borderRadius: '50%',
+                      background: q.resolved ? '#00b300' : '#d00000',
+                      flexShrink: 0
+                    }}></div>
+                    <div className="ubs-hot-question-title">{q.title}</div>
+                  </div>
+                  <div className="ubs-hot-question-meta">by {q.author} &middot; {q.time}</div>
+                  <div style={{display: 'flex', gap: 12, fontSize: 14, marginBottom: 4}}>
+                    <span className="ubs-upvote"><ThumbsUp /> {q.votes}</span>
+                    <span className="ubs-downvote"><ThumbsDown /> 0</span>
+                    <span style={{color: '#d00000', fontWeight: 600}}><MessageSquare style={{marginRight: 2}} />{q.answers} answers</span>
+                  </div>
+                  <div style={{marginTop: 6, display: 'flex', gap: 6}}>
+                    {q.tags.map(tag => (
+                      <span key={tag} className="ubs-tag" style={{background: getTagColor(tag), color: getTagColor(tag) === '#fff' ? '#d00000' : '#fff', fontSize: '0.85rem', padding: '0.15rem 0.7rem'}}>{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              {filteredQuestions.length === 0 && <div style={{color: '#888', fontSize: 14}}>No questions for this tag.</div>}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -598,9 +662,9 @@ function QuestionPage() {
   };
 
   return (
-    <div style={{maxWidth: '98vw', margin: '1.5rem auto', display: 'flex', flexDirection: 'row', gap: 32, alignItems: 'flex-start', justifyContent: 'center'}}>
+    <div style={{maxWidth: '98vw', width: '100%', margin: '1.5rem auto', display: 'flex', flexDirection: 'row', gap: 32, alignItems: 'flex-start', justifyContent: 'center'}}>
       {/* Left: Question and answers */}
-      <div style={{flex: '0 1 60%', maxWidth: '60vw', background: '#fff', borderRadius: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.04)', padding: '1.2rem 2vw', minWidth: 0}}>
+      <div style={{flex: '0 1 60%', maxWidth: '60vw', background: '#fff', borderRadius: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.04)', padding: '2rem 2vw', minWidth: 0}}>
         <button onClick={() => navigate(-1)} style={{background: 'none', border: 'none', color: '#d00000', fontWeight: 700, marginBottom: 24, cursor: 'pointer', display: 'flex', alignItems: 'center'}}>
           <ArrowLeft style={{marginRight: 6}} /> Back
         </button>
@@ -622,9 +686,17 @@ function QuestionPage() {
           {/* Placeholder for question body/description */}
           This is a detailed description of the question. (In a real app, this would be the full question body.)
         </div>
+        {/* AI Answer */}
+        <div style={{marginTop: 32, marginBottom: 32}}>
+          <div style={{fontWeight: 700, fontSize: 18, marginBottom: 12, color: '#d00000'}}>🤖 AI Recommended Answer</div>
+          <div style={{background: '#f8f9fa', borderRadius: 12, padding: '1.5rem', borderLeft: '4px solid #d00000'}}>
+            <div style={{fontSize: 16, color: '#222', lineHeight: 1.6}}>{question.aiAnswer}</div>
+            <div style={{marginTop: 12, fontSize: 13, color: '#888'}}>Generated by UBS AI Assistant</div>
+          </div>
+        </div>
         {/* Answers section (stub) */}
         <div style={{marginTop: 32}}>
-          <div style={{fontWeight: 700, fontSize: 18, marginBottom: 12}}>Answers</div>
+          <div style={{fontWeight: 700, fontSize: 18, marginBottom: 12}}>Community Answers</div>
           <div style={{background: '#fafbfc', borderRadius: 10, padding: '1rem 1.5rem', marginBottom: 12}}>
             <div style={{fontWeight: 600, color: '#222'}}>This is a sample answer.</div>
             <div style={{fontSize: 13, color: '#888', marginTop: 2}}>by John D. &middot; 1h ago</div>
@@ -638,9 +710,9 @@ function QuestionPage() {
           <button style={{background: '#d00000', color: '#fff', border: 'none', borderRadius: 8, padding: '0.5rem 1.5rem', fontWeight: 700}}>Post Answer</button>
         </div>
       </div>
-      {/* Right: Communities and recommended people */}
-      <div style={{flex: '0 1 40%', maxWidth: '40vw', minWidth: 320, display: 'flex', flexDirection: 'column', gap: 24}}>
-        <div style={{width: '100%', background: '#fff', borderRadius: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.04)', padding: '1.2rem 1.5vw'}}>
+      {/* Right: Related communities and people */}
+      <div style={{flex: '0 1 40%', maxWidth: '40vw', minWidth: 220, background: '#fff', borderRadius: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.04)', padding: '2rem 1.5vw', display: 'flex', flexDirection: 'column', gap: 32}}>
+        <div style={{background: '#fff', borderRadius: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.04)', padding: '1.5rem'}}>
           <div style={{fontWeight: 700, fontSize: 17, color: '#d00000', marginBottom: 10}}>Related Communities</div>
           {relatedCommunities.length === 0 && <div style={{color: '#888', fontSize: 14}}>No related communities found.</div>}
           {relatedCommunities.map(c => (
@@ -655,7 +727,7 @@ function QuestionPage() {
             </div>
           ))}
         </div>
-        <div style={{width: '100%', background: '#fff', borderRadius: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.04)', padding: '1.2rem 1.5vw'}}>
+        <div style={{background: '#fff', borderRadius: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.04)', padding: '1.5rem'}}>
           <div style={{fontWeight: 700, fontSize: 17, color: '#d00000', marginBottom: 10}}>Recommended People to Ask</div>
           {recommendedPeople.length === 0 && <div style={{color: '#888', fontSize: 14}}>No recommendations found.</div>}
           {recommendedPeople.map(person => (
@@ -706,7 +778,16 @@ function ProjectPage() {
         {filteredQuestions.length === 0 && <div style={{color: '#888', fontSize: 14}}>No questions found for this project.</div>}
         {filteredQuestions.map(q => (
           <div key={q.id} className="ubs-hot-question" style={{marginBottom: 16, background: '#fafbfc', borderRadius: 10, padding: '1rem 1.5rem', cursor: 'pointer'}} onClick={() => navigate(`/question/${q.id}`)}>
-            <div className="ubs-hot-question-title">{q.title}</div>
+            <div style={{display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4}}>
+              <div style={{
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                background: q.resolved ? '#00b300' : '#d00000',
+                flexShrink: 0
+              }}></div>
+              <div className="ubs-hot-question-title">{q.title}</div>
+            </div>
             <div className="ubs-hot-question-meta">by {q.author} &middot; {q.time}</div>
             <div style={{display: 'flex', gap: 12, fontSize: 14, marginBottom: 4}}>
               <span className="ubs-upvote"><ThumbsUp /> {q.votes}</span>
@@ -746,6 +827,225 @@ function ProjectPage() {
   );
 }
 
+// --- CreateQuestionPage component ---
+function CreateQuestionPage() {
+  const navigate = useNavigate();
+  const [title, setTitle] = useState('');
+  const [question, setQuestion] = useState('');
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [division, setDivision] = useState('general');
+
+  // Find similar questions based on title and content
+  const findSimilarQuestions = (title, content) => {
+    if (!title && !content) return [];
+    
+    const searchText = `${title} ${content}`.toLowerCase();
+    return hotQuestions.filter(q => {
+      const questionText = `${q.title} ${q.aiAnswer}`.toLowerCase();
+      // Simple similarity check - could be improved with more sophisticated algorithms
+      const titleWords = title.toLowerCase().split(' ').filter(word => word.length > 2);
+      const questionWords = q.title.toLowerCase().split(' ').filter(word => word.length > 2);
+      const commonWords = titleWords.filter(word => questionWords.includes(word));
+      
+      return commonWords.length > 0 || questionText.includes(searchText.split(' ')[0]);
+    }).slice(0, 5); // Limit to 5 similar questions
+  };
+
+  // Find related communities based on selected tags
+  const findRelatedCommunities = () => {
+    if (selectedTags.length === 0) return [];
+    return communities.filter(c => 
+      c.tags.some(tag => selectedTags.includes(tag))
+    ).slice(0, 5);
+  };
+
+  const handleRemoveTag = (tagToRemove) => {
+    setSelectedTags(selectedTags.filter(tag => tag !== tagToRemove));
+  };
+
+  const handleSubmit = () => {
+    if (title.trim() && question.trim()) {
+      // In a real app, this would submit to an API
+      const newQuestion = {
+        id: Date.now(),
+        title: title.trim(),
+        question: question.trim(),
+        tags: selectedTags,
+        author: 'You',
+        time: 'now',
+        votes: 0,
+        answers: 0,
+        resolved: false,
+        division: division
+      };
+      
+      // For demo purposes, we'll just navigate back
+      alert('Question created successfully!');
+      navigate(-1);
+    }
+  };
+
+  const similarQuestions = findSimilarQuestions(title, question);
+  const relatedCommunities = findRelatedCommunities();
+
+  return (
+    <div style={{maxWidth: 1200, margin: '2rem auto', display: 'flex', flexDirection: 'row', gap: 32, alignItems: 'flex-start'}}>
+      {/* Left: Create Question Form */}
+      <div style={{flex: '0 1 65%', maxWidth: '65vw', background: '#fff', borderRadius: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.04)', padding: '2rem 2vw', minWidth: 0}}>
+        <button onClick={() => navigate(-1)} style={{background: 'none', border: 'none', color: '#d00000', fontWeight: 700, marginBottom: 24, cursor: 'pointer', display: 'flex', alignItems: 'center'}}>
+          <ArrowLeft style={{marginRight: 6}} /> Back
+        </button>
+        <h2 style={{fontSize: '2rem', fontWeight: 800, color: '#111', marginBottom: 24}}>Create New Question</h2>
+        
+        {/* Division Selection */}
+        <div style={{marginBottom: 24}}>
+          <label style={{display: 'block', fontWeight: 600, color: '#222', marginBottom: 8}}>Division</label>
+          <select 
+            value={division} 
+            onChange={(e) => setDivision(e.target.value)}
+            style={{width: '100%', border: '1.5px solid #eee', borderRadius: 8, padding: '0.6rem 1rem', fontSize: 16}}
+          >
+            {divisions.map(d => (
+              <option key={d.key} value={d.key}>{d.name}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Title Input */}
+        <div style={{marginBottom: 24}}>
+          <label style={{display: 'block', fontWeight: 600, color: '#222', marginBottom: 8}}>Question Title *</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="What's your question? Be specific..."
+            style={{width: '100%', border: '1.5px solid #eee', borderRadius: 8, padding: '0.8rem 1rem', fontSize: 16}}
+          />
+        </div>
+
+        {/* Question Content */}
+        <div style={{marginBottom: 24}}>
+          <label style={{display: 'block', fontWeight: 600, color: '#222', marginBottom: 8}}>Question Details *</label>
+          <textarea
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            placeholder="Provide more context about your question. Include any relevant details, error messages, or steps you've already tried..."
+            rows={8}
+            style={{width: '100%', border: '1.5px solid #eee', borderRadius: 8, padding: '0.8rem 1rem', fontSize: 16, resize: 'vertical'}}
+          />
+        </div>
+
+        {/* Tags */}
+        <div style={{marginBottom: 24}}>
+          <label style={{display: 'block', fontWeight: 600, color: '#222', marginBottom: 8}}>Tags</label>
+          <div style={{marginBottom: 12}}>
+            <div style={{fontSize: 14, color: '#666', marginBottom: 8}}>Select tags for your question:</div>
+            <div style={{display: 'flex', flexWrap: 'wrap', gap: 6, maxHeight: 120, overflowY: 'auto', padding: '0.5rem', border: '1px solid #eee', borderRadius: 8}}>
+              {allTags.map(tag => (
+                <span
+                  key={tag}
+                  className="ubs-tag"
+                  style={{
+                    background: selectedTags.includes(tag) ? getSolidTagColor(tag) : getTagColor(tag),
+                    color: selectedTags.includes(tag) ? '#fff' : getTagColor(tag) === '#fff' ? '#d00000' : '#fff',
+                    cursor: 'pointer',
+                    border: selectedTags.includes(tag) ? '2px solid #111' : 'none',
+                    fontSize: '0.85rem',
+                    padding: '0.15rem 0.7rem',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onClick={() => {
+                    if (selectedTags.includes(tag)) {
+                      handleRemoveTag(tag);
+                    } else {
+                      setSelectedTags([...selectedTags, tag]);
+                    }
+                  }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+          {selectedTags.length > 0 && (
+            <div>
+              <div style={{fontSize: 14, color: '#666', marginBottom: 8}}>Selected tags:</div>
+              <div style={{display: 'flex', flexWrap: 'wrap', gap: 6}}>
+                {selectedTags.map(tag => (
+                  <span key={tag} className="ubs-tag" style={{background: getSolidTagColor(tag), color: '#fff', fontSize: '0.85rem', padding: '0.15rem 0.7rem', display: 'flex', alignItems: 'center', gap: 4}}>
+                    {tag}
+                    <button 
+                      onClick={() => handleRemoveTag(tag)}
+                      style={{background: 'none', border: 'none', color: '#fff', cursor: 'pointer', fontSize: 12, fontWeight: 700}}
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Submit Button */}
+        <button 
+          onClick={handleSubmit}
+          disabled={!title.trim() || !question.trim()}
+          style={{
+            background: (!title.trim() || !question.trim()) ? '#ccc' : '#d00000',
+            color: '#fff',
+            border: 'none',
+            borderRadius: 8,
+            padding: '0.8rem 2rem',
+            fontWeight: 700,
+            fontSize: 16,
+            cursor: (!title.trim() || !question.trim()) ? 'not-allowed' : 'pointer'
+          }}
+        >
+          Create Question
+        </button>
+      </div>
+
+      {/* Right: Similar Questions and Related Communities */}
+      <div style={{flex: '0 1 35%', maxWidth: '35vw', minWidth: 220, background: '#fff', borderRadius: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.04)', padding: '2rem 1.5vw', display: 'flex', flexDirection: 'column', gap: 24}}>
+        {/* Similar Questions */}
+        <div>
+          <div style={{fontWeight: 700, fontSize: 17, color: '#d00000', marginBottom: 12}}>Similar Questions</div>
+          {similarQuestions.length === 0 && <div style={{color: '#888', fontSize: 14}}>No similar questions found.</div>}
+          {similarQuestions.map(q => (
+            <div key={q.id} style={{marginBottom: 12, padding: '0.8rem', background: '#fafbfc', borderRadius: 8, cursor: 'pointer'}} onClick={() => navigate(`/question/${q.id}`)}>
+              <div style={{fontWeight: 600, color: '#222', fontSize: 14, marginBottom: 4}}>{q.title}</div>
+              <div style={{fontSize: 12, color: '#888'}}>by {q.author} &middot; {q.time}</div>
+              <div style={{marginTop: 4, display: 'flex', gap: 4}}>
+                {q.tags.slice(0, 2).map(tag => (
+                  <span key={tag} className="ubs-tag" style={{background: getTagColor(tag), color: getTagColor(tag) === '#fff' ? '#d00000' : '#fff', fontSize: '0.75rem', padding: '0.1rem 0.5rem'}}>{tag}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Related Communities */}
+        <div>
+          <div style={{fontWeight: 700, fontSize: 17, color: '#d00000', marginBottom: 12}}>Related Communities</div>
+          {relatedCommunities.length === 0 && <div style={{color: '#888', fontSize: 14}}>Add tags to see related communities.</div>}
+          {relatedCommunities.map(c => (
+            <div key={c.key} style={{marginBottom: 10, cursor: 'pointer'}} onClick={() => navigate(`/division/${division}/community/${c.key}`)}>
+              <div style={{fontWeight: 600, color: '#222', fontSize: 14}}>{c.name}</div>
+              <div style={{fontSize: 12, color: '#888'}}>{c.desc}</div>
+              <div style={{marginTop: 4, display: 'flex', gap: 4}}>
+                {c.tags.slice(0, 2).map(tag => (
+                  <span key={tag} className="ubs-tag" style={{background: getTagColor(tag), color: getTagColor(tag) === '#fff' ? '#d00000' : '#fff', fontSize: '0.75rem', padding: '0.1rem 0.5rem'}}>{tag}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // --- ErrorPage component ---
 function ErrorPage() {
   const { errorId, divisionKey } = useParams();
@@ -774,7 +1074,16 @@ function ErrorPage() {
         {relatedQuestions.length === 0 && <div style={{color: '#888', fontSize: 14}}>No questions found for this error.</div>}
         {relatedQuestions.map(q => (
           <div key={q.id} className="ubs-hot-question" style={{marginBottom: 16, background: '#fafbfc', borderRadius: 10, padding: '1rem 1.5rem', cursor: 'pointer'}} onClick={() => navigate(`/question/${q.id}`)}>
-            <div className="ubs-hot-question-title">{q.title}</div>
+            <div style={{display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4}}>
+              <div style={{
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                background: q.resolved ? '#00b300' : '#d00000',
+                flexShrink: 0
+              }}></div>
+              <div className="ubs-hot-question-title">{q.title}</div>
+            </div>
             <div className="ubs-hot-question-meta">by {q.author} &middot; {q.time}</div>
             <div style={{display: 'flex', gap: 12, fontSize: 14, marginBottom: 4}}>
               <span className="ubs-upvote"><ThumbsUp /> {q.votes}</span>
@@ -824,6 +1133,7 @@ function App() {
         <Route path="/question/:questionId" element={<QuestionPage />} />
         <Route path="/project/:projectId" element={<ProjectPage />} />
         <Route path="/error/:errorId" element={<ErrorPage />} />
+        <Route path="/create-question" element={<CreateQuestionPage />} />
       </Routes>
     </Router>
   );
